@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kopi Kohlie Stock & Supply — Sistem Manajemen Persediaan Coffee Shop</title>
+  
+  <!-- SEO & Open Graph Meta Tags -->
+  <meta name="description" content="Kopi Kohlie Stock & Supply: Sistem operasional persediaan coffee shop, rekapitulasi transaksi kasir harian, estimasi pemakaian bahan baku, monitoring stok, dan siklus pengadaan.">
+  <meta name="theme-color" content="#305785">
+  
+  <!-- Google Fonts: DM Sans & Libre Baskerville (Exact Requirements) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Brand Favicon -->
+  <link rel="icon" type="image/png" href="images/logo.png">
+  
+  <!-- Lucide Outline Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Root Application Container -->
+  <div id="app-root"></div>
+
+  <!-- Global Toast Notifications Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Page Templates & Logic Scripts -->
+  <script src="pages.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    // Initialize Application upon load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check query params if any page is directly requested
+      const urlParams = new URLSearchParams(window.location.search);
+      const pageParam = urlParams.get('page');
+      const roleParam = urlParams.get('role');
+      
+      if (roleParam && (roleParam === 'owner' || roleParam === 'barista')) {
+        state.currentRole = roleParam;
+      }
+      if (pageParam) {
+        state.currentPage = pageParam;
+      }
+
+      renderApp();
+    });
+
+    // Global click listener to close popover when clicking outside
+    document.addEventListener('click', (e) => {
+      const notifBtn = document.querySelector('.btn-notif');
+      const popover = document.getElementById('notif-popover');
+      if (state.notifPopoverOpen && popover && !popover.contains(e.target) && notifBtn && !notifBtn.contains(e.target)) {
+        closeNotifPopover();
+      }
+    });
+  </script>
+</body>
+</html>
