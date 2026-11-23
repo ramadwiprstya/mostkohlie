@@ -1,24 +1,89 @@
-*.log
-.DS_Store
+# ==========================================
+# File Lingkungan & Kredensial Sensitif (.env)
+# ==========================================
 .env
 .env.backup
 .env.production
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
+.env.local
+.env.staging
+.env.testing
+.env.*
+!.env.example
+
+# ==========================================
+# Kunci Keamanan, Token & Sertifikat SSL/TLS
+# ==========================================
 /auth.json
+/storage/*.key
+/certs/
+*.pem
+*.key
+*.crt
+*.cer
+*.pfx
+*.p12
+
+# ==========================================
+# Kredensial Tooling Cloud & Deployment
+# ==========================================
+/.vercel
+/.serverless/
+/.aws/
+
+# ==========================================
+# Database Lokal (SQLite & Backup Data)
+# ==========================================
+*.sqlite
+*.sqlite-journal
+*.sqlite3
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# ==========================================
+# File Log & Debugging
+# ==========================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+/storage/logs/*.log
+/storage/pail
+
+# ==========================================
+# File Dependensi & Kompilasi Aset
+# ==========================================
 /node_modules
+/vendor
 /public/build
 /public/hot
 /public/storage
-/storage/*.key
-/storage/pail
-/vendor
+
+# ==========================================
+# Cache Pengujian & Framework
+# ==========================================
+.phpunit.result.cache
+/.phpunit.cache
+.phpactor.json
+
+# ==========================================
+# File Konfigurasi IDE & Editor
+# ==========================================
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
 Homestead.json
 Homestead.yaml
+
+# ==========================================
+# File Sementara Sistem Operasi & Office Lock
+# ==========================================
+.DS_Store
 Thumbs.db
+~$*.xlsx
+~$*.xls
+~$*.docx
+~$*.pptx
+~$*

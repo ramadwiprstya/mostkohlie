@@ -282,10 +282,20 @@ class IngredientController extends Controller
             return redirect()->back()->with('error', "Bahan baku '{$ingredient->name}' tidak dapat dihapus karena masih digunakan dalam resep menu.");
         }
 
-        $name = $ingredient->name;
-        $ingredient->delete();
+        if ($ingredient->stockMovements()->exists() || $ingredient->usages()->exists() || $ingredient->emergencyPurchases()->exists() || $ingredient->procurementRequests()->exists()) {
+            return redirect()->back()->with('error', "Bahan baku '{$ingredient->name}' tidak dapat dihapus karena telah memiliki riwayat data/mutasi stok di sistem. Anda dapat menonaktifkan status bahan melalui menu Edit.");
+        }
 
-        return redirect()->route('ingredients.index')->with('success', "Bahan baku '{$name}' berhasil dihapus.");
+        $name = $ingredient->name;
+
+        try {
+            $ingredient->delete();
+            return redirect()->route('ingredients.index')->with('success', "Bahan baku '{$name}' berhasil dihapus.");
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->route('ingredients.index')->with('error', "Bahan baku '{$ingredient->name}' tidak dapat dihapus karena telah memiliki riwayat data/mutasi di sistem. Anda dapat menonaktifkan status bahan melalui menu Edit.");
+        } catch (\Exception $e) {
+            return redirect()->route('ingredients.index')->with('error', "Gagal menghapus bahan baku: " . $e->getMessage());
+        }
     }
 
     /**

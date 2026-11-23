@@ -139,12 +139,19 @@ class MenuController extends Controller
         }
 
         $name = $menu->name;
-        if ($menu->photo && file_exists(public_path($menu->photo)) && str_contains($menu->photo, 'images/menus/')) {
-            @unlink(public_path($menu->photo));
-        }
-        $menu->delete();
 
-        return redirect()->route('menus.index')->with('success', "Menu '{$name}' berhasil dihapus.");
+        try {
+            if ($menu->photo && file_exists(public_path($menu->photo)) && str_contains($menu->photo, 'images/menus/')) {
+                @unlink(public_path($menu->photo));
+            }
+            $menu->delete();
+
+            return redirect()->route('menus.index')->with('success', "Menu '{$name}' berhasil dihapus.");
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->route('menus.index')->with('error', "Menu '{$name}' tidak dapat dihapus karena masih memiliki riwayat data terkait di sistem.");
+        } catch (\Exception $e) {
+            return redirect()->route('menus.index')->with('error', "Gagal menghapus menu: " . $e->getMessage());
+        }
     }
 
     public function recipeIndex()
